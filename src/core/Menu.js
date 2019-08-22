@@ -54,7 +54,7 @@ const Menu = ({ history }) => (
                             Sign Out
                         </span>
                     </li>
-                    <li className="nav-item" class="UserProfile">
+                    <li className="UserProfile">
 
                         <Link to={`/user/${isAuthenticated().user._id}`}
                             style={
