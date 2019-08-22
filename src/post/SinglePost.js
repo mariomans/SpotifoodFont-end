@@ -1,17 +1,46 @@
 import React, { Component } from 'react';
-import { singlePost , remove} from './apiPost'
+import { singlePost, remove } from './apiPost'
 import DefalutPost from '../images/dishes.jpg';
-import { Link , Redirect} from 'react-router-dom';
-import {isAuthenticated} from '../auth';
+import { Link, Redirect } from 'react-router-dom';
+import { isAuthenticated } from '../auth';
+import FollowProfileButton from '../user/FollowProfileButton';
 
 class SinglePost extends Component {
-    state = {
+    constructor() {
+        super()
+        this.state = {
         post: '',
-        redirectToHome: false
+        user:'',
+        redirectToHome: false,
+        following: false,
+        error: ''
+        }
+    }
+
+    checkFollow = user => {
+        const jwt = isAuthenticated().token;
+        const match = user.followers.find(follower => {
+            // one id has many other ids(followers) and vice versa
+            return follower._id === jwt.user._id
+        })
+        return match
+    }
+    clickFollowButton = callApi => {
+        const postId = this.props.match.params.postId;
+        const token = isAuthenticated().token;
+        console.log(this.state.post._id);
+        callApi(postId, token, this.state.user._id)
+            .then(data => {
+                if (data.error) {
+                    this.setState({error: data.error})
+                } else {
+                    this.setState({ user: data, following: !this.state.following })
+                }
+            })
     }
 
     componentDidMount = () => {
-        const postId = this.props.match.params.postId
+        const postId = this.props.match.params.postId;
         singlePost(postId).then(data => {
             if (data.error) {
                 console.log(data.error);
@@ -21,14 +50,16 @@ class SinglePost extends Component {
         })
     }
 
+
+
     deletePost = () => {
         const postId = this.props.match.params.postId;
         const token = isAuthenticated().token
         remove(postId, token).then(data => {
-            if(data.error){
+            if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({redirectToHome: true});
+                this.setState({ redirectToHome: true });
             }
         });
     }
@@ -65,16 +96,20 @@ class SinglePost extends Component {
                         Bact to posts
                     </Link>
 
-                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id && (
+                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id ? (
                         <>
-                        <Link to={`/post/edit/${post._id}`} className="btn btn-raised btn-warning mr-5">
-                        Edit post
+                            <Link to={`/post/edit/${post._id}`} className="btn btn-raised btn-warning mr-5">
+                                Edit post
                         </Link>
-                        <button onClick={this.deleteConfirmed} to={`/`} className="btn btn-raised btn-danger">
-                            Delete Post
-                        </button> 
+                            <button onClick={this.deleteConfirmed} to={`/`} className="btn btn-raised btn-danger">
+                                Delete Post
+                        </button>
                         </>
-                    )}
+                    ) : (
+                            <FollowProfileButton
+                                following={this.state.following}
+                                onButtonClick={this.clickFollowButton} />
+                        )}
                 </div>
             </div>
         );
@@ -83,7 +118,7 @@ class SinglePost extends Component {
 
     render() {
 
-        if(this.state.redirectToHome) {
+        if (this.state.redirectToHome) {
             return <Redirect to={`/`} />;
         }
         const { post } = this.state;
@@ -99,5 +134,6 @@ class SinglePost extends Component {
         );
     }
 }
+
 
 export default SinglePost;
