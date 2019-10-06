@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { singlePost, remove } from './apiPost'
-import DefalutPost from '../images/dishes.jpg';
+import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
 import FollowProfileButton from '../user/FollowProfileButton';
@@ -9,35 +9,37 @@ class SinglePost extends Component {
     constructor() {
         super()
         this.state = {
-        post: '',
-        user:'',
-        redirectToHome: false,
-        following: false,
-        error: ''
+            user: { following: [], followers: [] },
+            post: '',
+            user: '',
+            redirectToHome: false,
+            following: false,
+            error: ''
         }
     }
 
     checkFollow = user => {
-        const jwt = isAuthenticated().token;
+        const jwt = isAuthenticated();
         const match = user.followers.find(follower => {
             // one id has many other ids(followers) and vice versa
             return follower._id === jwt.user._id
-        })
-        return match
-    }
+        });
+        return match;
+    };
+
     clickFollowButton = callApi => {
-        const postId = this.props.match.params.postId;
+        const userId = isAuthenticated().user._id;
         const token = isAuthenticated().token;
-        console.log(this.state.post._id);
-        callApi(postId, token, this.state.user._id)
+        callApi(userId, token, this.state.user._id)
             .then(data => {
                 if (data.error) {
-                    this.setState({error: data.error})
+                    this.setState({ error: data.error })
                 } else {
                     this.setState({ user: data, following: !this.state.following })
                 }
             })
     }
+
 
     componentDidMount = () => {
         const postId = this.props.match.params.postId;
@@ -91,6 +93,7 @@ class SinglePost extends Component {
                     Posted by <Link to={`${posterId}`}>{posterName}{" "}</Link>
                     on {new Date(post.created).toDateString()}
                 </p>
+                <br />
                 <div className="d-inline-block">
                     <Link to={`/`} className="btn btn-raised btn-primary mr-5">
                         Bact to posts
@@ -111,7 +114,38 @@ class SinglePost extends Component {
                                 onButtonClick={this.clickFollowButton} />
                         )}
                 </div>
+                <br />
+                <img
+                    style={{ height: "150px", width: '300px', oubjectFit: "cover" }}
+                    src={DefalutPost}
+                />
+                <div>
+                    {isAuthenticated().user &&
+                        isAuthenticated().user.role === "admin" && (
+                            <div class="card mt-5">
+                                <div className="card-body">
+                                    <h5 className="card-title">Admin</h5>
+                                    <p className="mb-2 text-danger">
+                                        Edit/Delete as an Admin
+                    </p>
+                                    <Link
+                                        to={`/post/edit/${post._id}`}
+                                        className="btn btn-raised btn-warning btn-sm mr-5"
+                                    >
+                                        Update Post
+                    </Link>
+                                    <button
+                                        onClick={this.deleteConfirmed}
+                                        className="btn btn-raised btn-danger"
+                                    >
+                                        Delete Post
+                    </button>
+                                </div>
+                            </div>
+                        )}
+                </div>
             </div>
+
         );
 
     };
