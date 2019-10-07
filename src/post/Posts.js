@@ -8,7 +8,8 @@ class Posts extends Component {
         super();
         this.state = {
             posts: [],
-            page: 1
+            page: 1,
+            search: ""
         };
     }
 
@@ -36,6 +37,10 @@ class Posts extends Component {
         this.loadPosts(this.state.page - number);
     };
 
+    onchange = e =>{
+        this.setState({ search : e.target.value});
+    }
+
     renderPosts = posts => {
         return (
             <div className="row">
@@ -46,6 +51,13 @@ class Posts extends Component {
                     const posterName = post.postedBy
                         ? post.postedBy.name
                         : " Unknown";
+
+                    const {search} = this.state;
+                    var code = post.title.toLowerCase()
+
+                    if( search !== "" && post.title.toLowerCase().indexOf( search.toLowerCase()) === -1){
+                        return null
+                    }
 
                     return (
                         <div className="card col-md-4" key={i}>
@@ -71,7 +83,6 @@ class Posts extends Component {
                                     <Link to={`${posterId}`}>
                                         {posterName}{" "}
                                     </Link>
-                                    on {new Date(post.created).toDateString()}
                                 </p>
                                 <Link
                                     to={`/post/${post._id}`}
@@ -95,6 +106,10 @@ class Posts extends Component {
                     {!posts.length ? "No more posts!" : "Recent Posts"}
                 </h2>
 
+                <div className="col">
+                    <input style={{ height: "50px", width: "500px" }} icon="search" placeholder= "Search food name" onChange={this.onchange}/>
+                </div>
+                <br></br>
                 {this.renderPosts(posts)}
 
                 {page > 1 ? (
