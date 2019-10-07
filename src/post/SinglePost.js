@@ -20,6 +20,12 @@ class SinglePost extends Component {
         }
     }
 
+    checkLike = likes => {
+        const userId = isAuthenticated() && isAuthenticated().user._id;
+        let match = likes.indexOf(userId) !== -1;
+        return match;
+    };
+    
     checkFollow = user => {
         const jwt = isAuthenticated();
         const match = user.followers.find(follower => {
@@ -109,7 +115,7 @@ class SinglePost extends Component {
                     onError={i => (i.target.src = `${DefalutPost}`)}
                     alt={post.title}
                 />
-                
+
                 {like ? (
                     <h3 onClick={this.likeToggle}>
                         <i
