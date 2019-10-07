@@ -8,8 +8,7 @@ class Posts extends Component {
         super();
         this.state = {
             posts: [],
-            page: 1,
-            search : ""
+            page: 1
         };
     }
 
@@ -37,16 +36,7 @@ class Posts extends Component {
         this.loadPosts(this.state.page - number);
     };
 
-    onchange = e =>{
-        this.setState({ search : e.target.value });
-    }
-
     renderPosts = posts => {
-        const {search} = this.state;
-        var code = post.title.toLowerCase();
-            if ( search !== "" && post.title.toLowerCase().indexOf( search.toLowerCase() ) === -1){
-                return null
-            }
         return (
             <div className="row">
                 {posts.map((post, i) => {
