@@ -13,6 +13,7 @@ class SinglePost extends Component {
             post: '',
             user: '',
             redirectToHome: false,
+            redirectToSignin: false,
             following: false,
             error: '',
             like: false,
@@ -25,7 +26,7 @@ class SinglePost extends Component {
         let match = likes.indexOf(userId) !== -1;
         return match;
     };
-    
+
     checkFollow = user => {
         const jwt = isAuthenticated();
         const match = user.followers.find(follower => {
