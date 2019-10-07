@@ -13,9 +13,9 @@ export const create = (userId, token, post) => {
         .catch(err => console.log(err));
 }
 
-export const list = () => {
-    return fetch(`${process.env.REACT_APP_API_URL}/posts`, {
-        method: "GET",
+export const list = page => {
+    return fetch(`${process.env.REACT_APP_API_URL}/posts/?page=${page}`, {
+        method: "GET"
     })
         .then(response => {
             return response.json();
@@ -71,6 +71,22 @@ export const update = (postId, token, post) => {
             Authorization: `Bearer ${token}`
         },
         body: post
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => console.log(err));
+}
+
+export const follow = (postId, token, followId) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/user/follow`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({postId, followId})
     })
         .then(response => {
             return response.json();

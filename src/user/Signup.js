@@ -10,6 +10,7 @@ class Signup extends Component {
             dob: "",
             gender: "",
             password: "",
+            personalization: "",
             error: ""
         };
     }
@@ -21,13 +22,14 @@ class Signup extends Component {
 
     clickSubmit = event => {
         event.preventDefault();
-        const { name, email, password ,dob, gender} = this.state;
+        const { name, email, password ,dob, gender, personalization} = this.state;
         const user = {
             name,
             email,
             dob,
             gender,
-            password
+            password,
+            personalization
         };
         // console.log(user);
 
@@ -41,12 +43,13 @@ class Signup extends Component {
                     dob: "",
                     gender: "",
                     password: "",
+                    personalization: "",
                     open: true
                 });
             });
     };
 
-    signupForm = (name, email, password, dob, gender) => (
+    signupForm = (name, email, password, dob, gender, personalization) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Name</label>
@@ -63,6 +66,16 @@ class Signup extends Component {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
+                </select>
+
+            </div>
+            <div className="form-group">
+                <label className="text-muted">Type of food that you like</label>
+                <select onChange={this.handleChange("personalization")} className="form-control" value={personalization}>
+                    <option></option>
+                    <option value="Veggie">Veggie</option>
+                    <option value="Streetfood">Streetfood</option>
+                    <option value="Healthyfood">Healthyfood</option>
                 </select>
 
             </div>

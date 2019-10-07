@@ -46,7 +46,7 @@ class EditPost extends Component {
     isValid = () => {
         const { title, body, fileSize } = this.state
         if (fileSize > 100000) {
-            this.setState({ error: "File size should be less than 100kb" , loading: false});
+            this.setState({ error: "File size should be less than 100kb", loading: false });
             return false
         }
         if (title.length === 0 || body.length === 0) {
@@ -106,6 +106,11 @@ class EditPost extends Component {
                 <label className="text-muted">How to cook</label>
                 <textarea onChange={this.handleChange("bodys")} type="text" className="form-control" value={bodys}></textarea>
             </div>
+
+            {/* <div className="form-group">
+                <label className="text-muted">Advertisement</label>
+                <input onChange={this.handleChange("advertisement")} type="file" accept="image/*" className="form-control"></input>
+            </div> */}
             <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
                 Edit Post
             </button>
@@ -135,8 +140,18 @@ class EditPost extends Component {
                     alt={title}
                 />
 
+                {/* <img
+                    style={{ height: "200px", width: 'auto' }}
+                    className="img-thumbnail"
+                    onError={i => (i.target.src = `${DefalutPost}`)}
+                    src={`${process.env.REACT_APP_API_URL}/post/advertisement/${id}?${new Date().getTime()}`}
+                    alt={title}
+                /> */}
+
                 {this.editPostForm(title, body)}
             </div>
+
+
         )
     }
 }

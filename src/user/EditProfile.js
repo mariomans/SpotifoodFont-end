@@ -79,22 +79,29 @@ class EditProfile extends Component {
 
     clickSubmit = event => {
         event.preventDefault();
-        this.setState({ loading: true })
-
+        this.setState({ loading: true });
+     
         if (this.isValid()) {
-
             const userId = this.props.match.params.userId;
             const token = isAuthenticated().token;
-            update(userId, token, this.userData)
-                .then(data => {
-                    if (data.error) this.setState({ error: data.error });
-                    else
-                        updateUser(data, () => {
-                            this.setState({
-                                redirectToProfile: true
-                        })               
+     
+            update(userId, token, this.userData).then(data => {
+                if (data.error) {
+                    this.setState({ error: data.error });
+                    // if admin only redirect
+                } else if (isAuthenticated().user.role === "admin") {
+                    this.setState({
+                        redirectToProfile: true
                     });
-                });
+                } else {
+                    // if same user update localstorage and redirect
+                    updateUser(data, () => {
+                        this.setState({
+                            redirectToProfile: true
+                        });
+                    });
+                }
+            });
         }
     };
 
