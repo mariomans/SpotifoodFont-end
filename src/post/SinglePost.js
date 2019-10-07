@@ -76,7 +76,6 @@ class SinglePost extends Component {
     renderPost = (post) => {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
-        console.log(post.postedBy._id);
         return (
             <div className="card-body">
                 <img
