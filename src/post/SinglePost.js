@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { singlePost, remove } from './apiPost'
+import { singlePost, remove ,like,unlike} from './apiPost'
 import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
@@ -14,7 +14,9 @@ class SinglePost extends Component {
             user: '',
             redirectToHome: false,
             following: false,
-            error: ''
+            error: '',
+            like: false,
+            likes: 0
         }
     }
 
@@ -47,12 +49,32 @@ class SinglePost extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({ post: data });
+                this.setState({ post: data , likes: data.likes.length});
             }
         })
     }
 
+    likeToggle = () =>{
+        if (!isAuthenticated()) {
+            this.setState({ redirectToSignin: true });
+            return false;
+        }
+        let callApi = this.state.like ? unlike : like;
+        const userId = isAuthenticated().user._id;
+        const postId = this.state.post._id;
+        const token = isAuthenticated().token;
 
+        callApi(userId, token, postId).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                this.setState({
+                    like: !this.state.like,
+                    likes: data.likes.length
+                });
+            }
+        });
+    }
 
     deletePost = () => {
         const postId = this.props.match.params.postId;
@@ -76,6 +98,8 @@ class SinglePost extends Component {
     renderPost = (post) => {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
+
+        const {like, likes} = this.state
         return (
             <div className="card-body">
                 <img
@@ -85,6 +109,8 @@ class SinglePost extends Component {
                     onError={i => (i.target.src = `${DefalutPost}`)}
                     alt={post.title}
                 />
+                <h3 onClick={this.likeToggle}>{likes} Like</h3>
+
                 <p className="card-text"> {post.body} </p>
                 <br />
                 <p className="card-text"> {post.bodys} </p>
