@@ -104,7 +104,16 @@ class Profile extends Component {
                             <p>Gender: {user.gender}</p>
                             <p>{`Joined ${new Date(user.created).toDateString()}`}</p>
                         </div>
+                        <div className="row">
+                            <div className="col md-12 mt-5 mb-5">
+                                <hr />
+                                <p className="lead">{user.about}</p>
+                                <hr />
 
+
+
+                            </div>
+                        </div>
                         {isAuthenticated().user && isAuthenticated().user._id === user._id ? (
                             <div className="d-inline-block">
                                 <Link className="btn btn-raised btn-success mr-5" to={`/post/create/`}>
@@ -122,7 +131,7 @@ class Profile extends Component {
                             )}
                         <hr />
                         <ProfileTabs
-                            posts={user.posts}
+                            posts={posts}
                             followers={user.followers}
                             following={user.following}
                         />
@@ -150,16 +159,7 @@ class Profile extends Component {
                             </div>
                         )}
                 </div>
-                <div className="row">
-                    <div className="col md-12 mt-5 mb-5">
-                        <hr />
-                        <p className="lead">{user.about}</p>
-                        <hr />
 
-
-
-                    </div>
-                </div>
             </div>
         )
     }

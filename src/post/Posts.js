@@ -83,6 +83,7 @@ class Posts extends Component {
                                     <Link to={`${posterId}`}>
                                         {posterName}{" "}
                                     </Link>
+                                    on {new Date(post.created).toDateString()}
                                 </p>
                                 <Link
                                     to={`/post/${post._id}`}
