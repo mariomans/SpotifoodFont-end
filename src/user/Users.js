@@ -25,11 +25,12 @@ class Users extends Component {
                 (
                     <div className="card col-md-4" key={i}>
                         <img style={{ height: "200px", width: "100%" }}
-                            className="img-thumbnail"
+                            className="img-thunbnail"
                             src={`${process.env.REACT_APP_API_URL}/user/photo/${user._id}`}
                             onError={i => (i.target.src = `${DefalutProfrile}`)}
                             alt={user.name}
                         />
+
                         <div className="card-body">
                             <h5 className="card-title">{user.name}</h5>
                             <p className="card-text"> {user.email} </p>
