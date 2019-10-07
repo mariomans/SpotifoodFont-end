@@ -74,8 +74,9 @@ class SinglePost extends Component {
     }
 
     renderPost = (post) => {
-        const posterId = post.postedBy ? `/user/{post.postedBy._id}` : ""
+        const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
+        console.log(post.postedBy._id);
         return (
             <div className="card-body">
                 <img
@@ -90,7 +91,7 @@ class SinglePost extends Component {
                 <p className="card-text"> {post.bodys} </p>
                 <br />
                 <p className="font-italic mark">
-                    Posted by <Link to={`${posterId}`}>{posterName}{" "}</Link>
+                    Posted by <Link to={`/user/${posterId}`}>{posterName}{" "}</Link>
                     on {new Date(post.created).toDateString()}
                 </p>
                 <br />
