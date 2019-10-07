@@ -109,6 +109,7 @@ class SinglePost extends Component {
                     onError={i => (i.target.src = `${DefalutPost}`)}
                     alt={post.title}
                 />
+                
                 {like ? (
                     <h3 onClick={this.likeToggle}>
                         <i
@@ -118,6 +119,14 @@ class SinglePost extends Component {
                         {likes} Like
                     </h3>
                 ) : (
+                    <h3 onClick={this.likeToggle}>
+                        <i
+                            className="fa fa-thumbs-up text-warning bg-dark"
+                            style={{ padding: '10px', borderRadius: '50%' }}
+                        />{' '}
+                        {likes} Like
+                    </h3>
+                )}
 
                 <p className="card-text"> {post.body} </p>
                 <br />
