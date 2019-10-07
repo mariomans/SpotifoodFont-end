@@ -201,11 +201,14 @@ class SinglePost extends Component {
     };
 
     render() {
+        const { post, redirectToHome, redirectToSignin } = this.state;
 
-        if (this.state.redirectToHome) {
+        if (redirectToHome) {
             return <Redirect to={`/`} />;
+        } else if (redirectToSignin) {
+            return <Redirect to={`/signin`} />;
         }
-        const { post } = this.state;
+
         return (
             <div className="container">
                 <h2 className="display-2 mt-5 mb-5">{post.title}</h2>
