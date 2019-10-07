@@ -49,7 +49,7 @@ class SinglePost extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({ post: data , likes: data.likes.length});
+                this.setState({ post: data , likes: data.likes.length ,  like: this.checkLike(data.likes)});
             }
         })
     }
@@ -109,7 +109,15 @@ class SinglePost extends Component {
                     onError={i => (i.target.src = `${DefalutPost}`)}
                     alt={post.title}
                 />
-                <h3 onClick={this.likeToggle}>{likes} Like</h3>
+                {like ? (
+                    <h3 onClick={this.likeToggle}>
+                        <i
+                            className="fa fa-thumbs-up text-success bg-dark"
+                            style={{ padding: '10px', borderRadius: '50%' }}
+                        />{' '}
+                        {likes} Like
+                    </h3>
+                ) : (
 
                 <p className="card-text"> {post.body} </p>
                 <br />
