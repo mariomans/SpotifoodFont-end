@@ -33,7 +33,8 @@ class EditProfile extends Component {
                         name: data.name,
                         email: data.email,
                         error: '',
-                        about: data.about
+                        about: data.about,
+                        personalization: data.personalization
                     });
                 }
             });
@@ -129,6 +130,16 @@ class EditProfile extends Component {
                 <label className="text-muted">Password</label>
                 <input onChange={this.handleChange("password")} type="password" className="form-control" value={password}></input>
             </div>
+            <div className="form-group">
+                <label className="text-muted">Personality</label>
+                <select onChange={this.handleChange("personalization")} type="text" className="form-control" value={personalization}>
+                    <option></option>
+                    <option value="Veggie">Veggie</option>
+                    <option value="Streetfood">Streetfood</option>
+                    <option value="Healthyfood">Healthyfood</option>
+                </select>
+
+            </div>
             <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
                 UPDATE
                     </button>
@@ -136,7 +147,7 @@ class EditProfile extends Component {
     );
 
     render() {
-        const { id, name, email, password, redirectToProfile, error, loading, about } = this.state
+        const { id, name, email, password, redirectToProfile, error, loading, about , personalization} = this.state
         if (redirectToProfile) {
             return <Redirect to={`/user/${id}`} />
         }
@@ -154,7 +165,7 @@ class EditProfile extends Component {
 
                 <img style={{ height: "200px", width: 'auto' }} className="img-thumbnail" onError={i => (i.target.src = `${DefalutProfrile}`)} src={photoUrl} alt={name} />
 
-                {this.editUserForm(name, email, password, about)}
+                {this.editUserForm(name, email, password, about , personalization)}
             </div>
         );
     }
