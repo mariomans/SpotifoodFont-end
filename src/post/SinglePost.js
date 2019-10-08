@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { singlePost, remove ,like,unlike} from './apiPost'
+import { singlePost, remove, like, unlike } from './apiPost'
 import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
@@ -56,12 +56,12 @@ class SinglePost extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({ post: data , likes: data.likes.length ,  like: this.checkLike(data.likes)});
+                this.setState({ post: data, likes: data.likes.length, like: this.checkLike(data.likes) });
             }
         })
     }
 
-    likeToggle = () =>{
+    likeToggle = () => {
         if (!isAuthenticated()) {
             this.setState({ redirectToSignin: true });
             return false;
@@ -106,7 +106,7 @@ class SinglePost extends Component {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
 
-        const {like, likes} = this.state
+        const { like, likes } = this.state
         return (
             <div className="card-body">
                 <img
@@ -126,14 +126,14 @@ class SinglePost extends Component {
                         {likes} Like
                     </h3>
                 ) : (
-                    <h3 onClick={this.likeToggle}>
-                        <i
-                            className="fa fa-thumbs-up text-warning bg-dark"
-                            style={{ padding: '10px', borderRadius: '50%' }}
-                        />{' '}
-                        {likes} Like
+                        <h3 onClick={this.likeToggle}>
+                            <i
+                                className="fa fa-thumbs-up text-warning bg-dark"
+                                style={{ padding: '10px', borderRadius: '50%' }}
+                            />{' '}
+                            {likes} Like
                     </h3>
-                )}
+                    )}
 
                 <p className="card-text"> {post.body} </p>
                 <br />
@@ -149,7 +149,7 @@ class SinglePost extends Component {
                         Bact to posts
                     </Link>
 
-                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id ? (
+                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id && (
                         <>
                             <Link to={`/post/edit/${post._id}`} className="btn btn-raised btn-warning mr-5">
                                 Edit post
@@ -158,11 +158,8 @@ class SinglePost extends Component {
                                 Delete Post
                         </button>
                         </>
-                    ) : (
-                            <FollowProfileButton
-                                following={this.state.following}
-                                onButtonClick={this.clickFollowButton} />
-                        )}
+                    )
+                    }
                 </div>
                 <br />
                 <img
