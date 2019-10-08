@@ -17,7 +17,8 @@ class EditProfile extends Component {
             error: "",
             fileSize: 0,
             loading: false,
-            about: ""
+            about: "",
+            personalization: ""
         };
     }
 
@@ -48,6 +49,10 @@ class EditProfile extends Component {
 
     isValid = () => {
         const { name, email, password, fileSize } = this.state
+        if (fileSize == 160000) {
+            this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false});
+            return false
+        }
         if (fileSize > 150000) {
             this.setState({ error: "File size should be less than 150kb" ,loading: false});
             return false
@@ -70,6 +75,17 @@ class EditProfile extends Component {
     };
 
     handleChange = name => event => {
+        const fileName = document.getElementById("fileName").value;
+        const idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //TO DO
+        }else{
+            alert("Only jpg/jpeg and png files are allowed!");
+            this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false,fileSize: 160000});
+            return false
+        }   
+        
         this.setState({ error: "" });
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
 
@@ -99,6 +115,7 @@ class EditProfile extends Component {
                     updateUser(data, () => {
                         this.setState({
                             redirectToProfile: true
+                            
                         });
                     });
                 }
@@ -108,11 +125,11 @@ class EditProfile extends Component {
 
 
 
-    editUserForm = (name, email, password, about) => (
+    editUserForm = (name, email, password, about , personalization) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Profile Photo</label>
-                <input onChange={this.handleChange("photo")} type="file" accept="image/*" className="form-control"></input>
+                <input onChange={this.handleChange("photo")} id="fileName" type="file" accept="image/*" className="form-control"></input>
             </div>
             <div className="form-group">
                 <label className="text-muted">Name</label>
