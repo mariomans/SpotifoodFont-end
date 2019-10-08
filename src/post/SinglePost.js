@@ -102,6 +102,35 @@ class SinglePost extends Component {
         }
     }
 
+    // clickSubmit = event => {
+    //     event.preventDefault();
+    //     this.setState({ loading: true });
+
+    //     const userId = isAuthenticated().user._id;
+    //     const token = isAuthenticated().token;
+    //     const postId = this.props.match.params.postId;
+    //     const history = postId;
+    //     console.log(userId);
+
+    //     console.log(history);
+    //     console.log(token);
+    //     console.log(postId);
+    //     update(userId, token, this.userData).then(data => {
+    //         if (data.error) {
+    //             this.setState({ error: data.error });
+    //         } else {
+    //             // if same user update localstorage and redirect
+    //             updateUser(data, () => {
+    //                 this.setState({
+    //                     redirectToProfile: true,
+    //                     history: [history]
+    //                 });
+    //             });
+    //         }
+    //     });
+
+    // };
+
     renderPost = (post) => {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
@@ -123,7 +152,7 @@ class SinglePost extends Component {
                             className="fa fa-thumbs-up text-success bg-dark"
                             style={{ padding: '10px', borderRadius: '50%' }}
                         />{' '}
-                        {likes} Like
+                         Click to unpin
                     </h3>
                 ) : (
                         <h3 onClick={this.likeToggle}>
@@ -131,7 +160,7 @@ class SinglePost extends Component {
                                 className="fa fa-thumbs-up text-warning bg-dark"
                                 style={{ padding: '10px', borderRadius: '50%' }}
                             />{' '}
-                            {likes} Like
+                             Click to pin
                     </h3>
                     )}
 
