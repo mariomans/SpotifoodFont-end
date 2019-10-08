@@ -67,8 +67,7 @@ class EditPost extends Component {
         if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
             //TO DO
         }else{
-            alert("Only jpg/jpeg and png files are allowed!");
-            this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false,fileSize: 160000});
+            this.setState({ error: "Only jpg and png files are allowed!" ,loading: false,fileSize: 160000});
             return false
         }   
 
