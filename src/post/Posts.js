@@ -86,7 +86,6 @@ class Posts extends Component {
                                     on {new Date(post.created).toDateString()}
                                 </p>
                                 <Link
-                                    onChange={sendType}
                                     to={`/post/${post._id}`}
                                     className="btn btn-raised btn-primary btn-sm"
                                 >
