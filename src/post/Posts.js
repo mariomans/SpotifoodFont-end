@@ -55,7 +55,7 @@ class Posts extends Component {
                     const {search} = this.state;
                     var code = post.title.toLowerCase()
 
-                    if( search !== "" && post.title.toLowerCase().indexOf( search.toLowerCase()) === -1){
+                    if( search !== "" && post.title.toLowerCase().indexOf( search.toLowerCase()) && post.body.toLowerCase().indexOf( search.toLowerCase()) === -1){
                         return null
                     }
 
@@ -86,6 +86,7 @@ class Posts extends Component {
                                     on {new Date(post.created).toDateString()}
                                 </p>
                                 <Link
+                                    onChange={sendType}
                                     to={`/post/${post._id}`}
                                     className="btn btn-raised btn-primary btn-sm"
                                 >
@@ -108,7 +109,7 @@ class Posts extends Component {
                 </h2>
 
                 <div className="col">
-                    <input style={{ height: "50px", width: "500px" }} icon="search" placeholder= "Search food name" onChange={this.onchange}/>
+                    <input style={{ height: "50px", width: "500px" }} icon="search" placeholder= "Search food name and ingredient" onChange={this.onchange}/>
                 </div>
                 <br></br>
                 {this.renderPosts(posts)}
