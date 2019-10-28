@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { singlePost, remove ,like,unlike} from './apiPost'
+import { singlePost, remove, like, unlike } from './apiPost'
 import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
 import FollowProfileButton from '../user/FollowProfileButton';
+import Img from 'react-image'
 
 class SinglePost extends Component {
     constructor() {
@@ -56,12 +57,12 @@ class SinglePost extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
-                this.setState({ post: data , likes: data.likes.length ,  like: this.checkLike(data.likes)});
+                this.setState({ post: data, likes: data.likes.length, like: this.checkLike(data.likes) });
             }
         })
     }
 
-    likeToggle = () =>{
+    likeToggle = () => {
         if (!isAuthenticated()) {
             this.setState({ redirectToSignin: true });
             return false;
@@ -102,11 +103,40 @@ class SinglePost extends Component {
         }
     }
 
+    // clickSubmit = event => {
+    //     event.preventDefault();
+    //     this.setState({ loading: true });
+
+    //     const userId = isAuthenticated().user._id;
+    //     const token = isAuthenticated().token;
+    //     const postId = this.props.match.params.postId;
+    //     const history = postId;
+    //     console.log(userId);
+
+    //     console.log(history);
+    //     console.log(token);
+    //     console.log(postId);
+    //     update(userId, token, this.userData).then(data => {
+    //         if (data.error) {
+    //             this.setState({ error: data.error });
+    //         } else {
+    //             // if same user update localstorage and redirect
+    //             updateUser(data, () => {
+    //                 this.setState({
+    //                     redirectToProfile: true,
+    //                     history: [history]
+    //                 });
+    //             });
+    //         }
+    //     });
+
+    // };
+
     renderPost = (post) => {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
 
-        const {like, likes} = this.state
+        const { like, likes } = this.state
         return (
             <div className="card-body">
                 <img
@@ -117,23 +147,32 @@ class SinglePost extends Component {
                     alt={post.title}
                 />
 
+                {/* <img
+                    style={{ height: "300px", width: 'auto', oubjectFit: "cover" }}
+                    className="img-thumbnail mb-5"
+                    src={`${process.env.REACT_APP_API_URL}/post/advertisement/${post._id}`}
+                    onError={i => (i.target.src = `${DefalutPost}`)}
+                    alt={post.title}
+                /> */}
+
+
                 {like ? (
                     <h3 onClick={this.likeToggle}>
                         <i
                             className="fa fa-thumbs-up text-success bg-dark"
                             style={{ padding: '10px', borderRadius: '50%' }}
                         />{' '}
-                        {likes} Like
+                        Click to unpin
                     </h3>
                 ) : (
-                    <h3 onClick={this.likeToggle}>
-                        <i
-                            className="fa fa-thumbs-up text-warning bg-dark"
-                            style={{ padding: '10px', borderRadius: '50%' }}
-                        />{' '}
-                        {likes} Like
+                        <h3 onClick={this.likeToggle}>
+                            <i
+                                className="fa fa-thumbs-up text-warning bg-dark"
+                                style={{ padding: '10px', borderRadius: '50%' }}
+                            />{' '}
+                            Click to pin
                     </h3>
-                )}
+                    )}
 
                 <p className="card-text"> {post.body} </p>
                 <br />
@@ -149,7 +188,7 @@ class SinglePost extends Component {
                         Bact to posts
                     </Link>
 
-                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id ? (
+                    {isAuthenticated().user && isAuthenticated().user._id === post.postedBy._id && (
                         <>
                             <Link to={`/post/edit/${post._id}`} className="btn btn-raised btn-warning mr-5">
                                 Edit post
@@ -158,16 +197,18 @@ class SinglePost extends Component {
                                 Delete Post
                         </button>
                         </>
-                    ) : (
-                            <FollowProfileButton
-                                following={this.state.following}
-                                onButtonClick={this.clickFollowButton} />
-                        )}
+                    )
+                    }
                 </div>
                 <br />
-                <img
-                    style={{ height: "150px", width: '300px', oubjectFit: "cover" }}
-                    src={DefalutPost}
+                <img   
+                    style={{ height: "200px", width: "auto" }}
+                    className="img-thumbnail"
+                    src={`${
+                        process.env.REACT_APP_API_URL
+                        }/post/photo/5d5d59311c9d4400001100de`}
+                    onError={i => (i.target.src = `${DefalutPost}`)
+                    }
                 />
                 <div>
                     {isAuthenticated().user &&

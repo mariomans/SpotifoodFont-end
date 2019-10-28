@@ -17,7 +17,8 @@ class EditProfile extends Component {
             error: "",
             fileSize: 0,
             loading: false,
-            about: ""
+            about: "",
+            personalization: ""
         };
     }
 
@@ -33,7 +34,8 @@ class EditProfile extends Component {
                         name: data.name,
                         email: data.email,
                         error: '',
-                        about: data.about
+                        about: data.about,
+                        personalization: data.personalization
                     });
                 }
             });
@@ -47,6 +49,10 @@ class EditProfile extends Component {
 
     isValid = () => {
         const { name, email, password, fileSize } = this.state
+        if (fileSize == 160000) {
+            this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false});
+            return false
+        }
         if (fileSize > 150000) {
             this.setState({ error: "File size should be less than 150kb" ,loading: false});
             return false
@@ -69,6 +75,17 @@ class EditProfile extends Component {
     };
 
     handleChange = name => event => {
+        const fileName = document.getElementById("fileName").value;
+        const idxDot = fileName.lastIndexOf(".") + 1;
+        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+            //TO DO
+            
+        }else{
+            this.setState({ error: "Only jpg and png files are allowed!" ,loading: false,fileSize: 160000});
+            return false
+        }   
+        
         this.setState({ error: "" });
         const value = name === 'photo' ? event.target.files[0] : event.target.value;
 
@@ -98,6 +115,7 @@ class EditProfile extends Component {
                     updateUser(data, () => {
                         this.setState({
                             redirectToProfile: true
+                            
                         });
                     });
                 }
@@ -107,11 +125,11 @@ class EditProfile extends Component {
 
 
 
-    editUserForm = (name, email, password, about) => (
+    editUserForm = (name, email, password, about , personalization) => (
         <form>
             <div className="form-group">
                 <label className="text-muted">Profile Photo</label>
-                <input onChange={this.handleChange("photo")} type="file" accept="image/*" className="form-control"></input>
+                <input onChange={this.handleChange("photo")} id="fileName" type="file" accept="image/*" className="form-control"></input>
             </div>
             <div className="form-group">
                 <label className="text-muted">Name</label>
@@ -129,6 +147,16 @@ class EditProfile extends Component {
                 <label className="text-muted">Password</label>
                 <input onChange={this.handleChange("password")} type="password" className="form-control" value={password}></input>
             </div>
+            <div className="form-group">
+                <label className="text-muted">Personality</label>
+                <select onChange={this.handleChange("personalization")} type="text" className="form-control" value={personalization}>
+                    <option></option>
+                    <option value="Veggie">Veggie</option>
+                    <option value="Streetfood">Streetfood</option>
+                    <option value="Healthyfood">Healthyfood</option>
+                </select>
+
+            </div>
             <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
                 UPDATE
                     </button>
@@ -136,7 +164,7 @@ class EditProfile extends Component {
     );
 
     render() {
-        const { id, name, email, password, redirectToProfile, error, loading, about } = this.state
+        const { id, name, email, password, redirectToProfile, error, loading, about , personalization} = this.state
         if (redirectToProfile) {
             return <Redirect to={`/user/${id}`} />
         }
@@ -152,9 +180,13 @@ class EditProfile extends Component {
                     <div className="jumbotron text-center">
                         <h2>Loading ...</h2> </div>) : ("")}
 
-                <img style={{ height: "200px", width: 'auto' }} className="img-thumbnail" onError={i => (i.target.src = `${DefalutProfrile}`)} src={photoUrl} alt={name} />
+                <img 
+                style={{ height: "200px", width: 'auto' }} 
+                className="img-thumbnail" 
+                onError={i => (i.target.src = `${DefalutProfrile}`)} 
+                src={photoUrl} alt={name} />
 
-                {this.editUserForm(name, email, password, about)}
+                {this.editUserForm(name, email, password, about , personalization)}
             </div>
         );
     }
