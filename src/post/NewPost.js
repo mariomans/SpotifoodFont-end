@@ -26,7 +26,7 @@ class NewPost extends Component {
     }
 
     isValid = () => {
-        const { title, body, bodys,fileSize } = this.state
+        const { title, body,fileSize } = this.state
         if (fileSize == 160000) {
             this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false});
             return false
@@ -35,7 +35,7 @@ class NewPost extends Component {
             this.setState({ error: "File size should be less than 100kb" });
             return false
         }
-        if (title.length === 0 || body.length === 0 || bodys.length === 0) {
+        if (title.length === 0 || body.length === 0 ) {
             this.setState({ error: "All fields are required", loading: false })
             return false
         }
@@ -49,13 +49,15 @@ class NewPost extends Component {
         if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
             //TO DO
         }else{
-            this.setState({ error: "Only jpg and png files are allowed!" ,loading: false,fileSize: 160000});
+            this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false,fileSize: 160000});
             return false
         }   
-        this.setState({ error: "" });
-        const value = name === 'photo' ? event.target.files[0] : event.target.value;
 
-        const fileSize = name === 'photo' ? event.target.files[0].size : 0;
+        this.setState({ error: "" });
+        const value =
+            name === "photo" ? event.target.files[0] : event.target.value;
+
+        const fileSize = name === "photo" ? event.target.files[0].size : 0;
         this.postData.set(name, value);
         this.setState({ [name]: value, fileSize });
     };
@@ -65,22 +67,21 @@ class NewPost extends Component {
         this.setState({ loading: true });
 
         if (this.isValid()) {
-
             const userId = isAuthenticated().user._id;
             const token = isAuthenticated().token;
-            create(userId, token, this.postData)
-                .then(data => {
-                    if (data.error) this.setState({ error: data.error });
-                    else
-                    this.setState({ 
-                        loading: false, 
-                        title: '' , 
-                        body: '' , 
-                        bodys: '',
-                        photo: '',
+
+            create(userId, token, this.postData).then(data => {
+                if (data.error) this.setState({ error: data.error });
+                else {
+                    this.setState({
+                        loading: false,
+                        title: "",
+                        body: "",
+                        bodys:"",
                         redirectToProfile: true
                     });
-                });
+                }
+            });
         }
     };
 
@@ -89,8 +90,14 @@ class NewPost extends Component {
     newPostForm = (title, body, bodys) => (
         <form>
             <div className="form-group">
-                <label className="text-muted">Profile Photo</label>
-                <input onChange={this.handleChange("photo")} id="fileName" type="file" accept="image/*" className="form-control"></input>
+                <label className="text-muted">Post Photo</label>
+                <input
+                    onChange={this.handleChange("photo")}
+                    id = "fileName"
+                    type="file"
+                    accept="image/*"
+                    className="form-control"
+                />
             </div>
             <div className="form-group">
                 <label className="text-muted">Name of dish</label>
@@ -111,19 +118,37 @@ class NewPost extends Component {
     );
 
     render() {
-        const { title, body, photo, user , error, loading , redirectToProfile} = this.state
+        const {
+            title,
+            body,
+            photo,
+            user,
+            error,
+            loading,
+            redirectToProfile
+        } = this.state;
+
         if (redirectToProfile) {
-            return <Redirect to={`/user/${user._id}`} />
+            return <Redirect to={`/user/${user._id}`} />;
         }
 
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">Create a new post</h2>
-
-                <div className="alert alert-danger" style={{ display: error ? "" : 'none' }}>{error}</div>
+                <h2 className="mt-5 mb-5">Create new post</h2>
+                <div
+                    className="alert alert-danger"
+                    style={{ display: error ? "" : "none" }}
+                >
+                    {error}
+                </div>
+                
                 {loading ? (
                     <div className="jumbotron text-center">
-                        <h2>Loading ...</h2> </div>) : ("")}
+                        <h2>Loading...</h2>
+                    </div>
+                ) : (
+                    ""
+                )}
 
                 {this.newPostForm(title, body)}
             </div>

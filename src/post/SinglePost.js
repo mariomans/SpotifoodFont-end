@@ -4,6 +4,7 @@ import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
 import FollowProfileButton from '../user/FollowProfileButton';
+import Img from 'react-image'
 
 class SinglePost extends Component {
     constructor() {
@@ -146,13 +147,22 @@ class SinglePost extends Component {
                     alt={post.title}
                 />
 
+                {/* <img
+                    style={{ height: "300px", width: 'auto', oubjectFit: "cover" }}
+                    className="img-thumbnail mb-5"
+                    src={`${process.env.REACT_APP_API_URL}/post/advertisement/${post._id}`}
+                    onError={i => (i.target.src = `${DefalutPost}`)}
+                    alt={post.title}
+                /> */}
+
+
                 {like ? (
                     <h3 onClick={this.likeToggle}>
                         <i
                             className="fa fa-thumbs-up text-success bg-dark"
                             style={{ padding: '10px', borderRadius: '50%' }}
                         />{' '}
-                         Click to unpin
+                        Click to unpin
                     </h3>
                 ) : (
                         <h3 onClick={this.likeToggle}>
@@ -160,7 +170,7 @@ class SinglePost extends Component {
                                 className="fa fa-thumbs-up text-warning bg-dark"
                                 style={{ padding: '10px', borderRadius: '50%' }}
                             />{' '}
-                             Click to pin
+                            Click to pin
                     </h3>
                     )}
 
@@ -191,9 +201,14 @@ class SinglePost extends Component {
                     }
                 </div>
                 <br />
-                <img
-                    style={{ height: "150px", width: '300px', oubjectFit: "cover" }}
-                    src={DefalutPost}
+                <img   
+                    style={{ height: "200px", width: "auto" }}
+                    className="img-thumbnail"
+                    src={`${
+                        process.env.REACT_APP_API_URL
+                        }/post/photo/5d5d59311c9d4400001100de`}
+                    onError={i => (i.target.src = `${DefalutPost}`)
+                    }
                 />
                 <div>
                     {isAuthenticated().user &&

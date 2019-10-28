@@ -80,6 +80,7 @@ class EditProfile extends Component {
         var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
         if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
             //TO DO
+            
         }else{
             this.setState({ error: "Only jpg and png files are allowed!" ,loading: false,fileSize: 160000});
             return false
@@ -179,7 +180,11 @@ class EditProfile extends Component {
                     <div className="jumbotron text-center">
                         <h2>Loading ...</h2> </div>) : ("")}
 
-                <img style={{ height: "200px", width: 'auto' }} className="img-thumbnail" onError={i => (i.target.src = `${DefalutProfrile}`)} src={photoUrl} alt={name} />
+                <img 
+                style={{ height: "200px", width: 'auto' }} 
+                className="img-thumbnail" 
+                onError={i => (i.target.src = `${DefalutProfrile}`)} 
+                src={photoUrl} alt={name} />
 
                 {this.editUserForm(name, email, password, about , personalization)}
             </div>
