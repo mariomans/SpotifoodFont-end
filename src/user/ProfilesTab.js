@@ -4,11 +4,11 @@ import DefaultProfile from "../images/avatar.jpg";
 
 class ProfileTabs extends Component {
     render() {
-        const { following, followers, posts } = this.props;
+        const { following, followers, posts, likes } = this.props;
         return (
             <div>
                 <div className="row">
-                    <div className="col-md-4">
+                    {/* <div className="col-md-4">
                         <h3 className="text-primary">
                             {followers.length} Followers
                         </h3>
@@ -30,7 +30,7 @@ class ProfileTabs extends Component {
                                             }
                                             src={`${
                                                 process.env.REACT_APP_API_URL
-                                            }/user/photo/${person._id}`}
+                                                }/user/photo/${person._id}`}
                                             alt={person.name}
                                         />
                                         <div>
@@ -42,7 +42,7 @@ class ProfileTabs extends Component {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
 
                     <div className="col-md-4">
                         <h3 className="text-primary">
@@ -66,13 +66,66 @@ class ProfileTabs extends Component {
                                             }
                                             src={`${
                                                 process.env.REACT_APP_API_URL
-                                            }/user/photo/${person._id}`}
+                                                }/user/photo/${person._id}`}
                                             alt={person.name}
                                         />
                                         <div>
                                             <p className="lead">
                                                 {person.name}
+                                                {person.likes}
                                             </p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* <div className="col-md-4">
+                        <h3 className="text-primary">
+                             Pin dish
+                        </h3>
+                        <hr />
+                        {likes.map((person, i) => (
+                            <div key={i}>
+                                <div>
+                                    <Link to={`/post/${person.likes}`}>
+                                        <img
+                                            style={{
+                                                borderRadius: "50%",
+                                                border: "1px solid black"
+                                            }}
+                                            className="float-left mr-2"
+                                            height="30px"
+                                            width="30px"
+                                            onError={i =>
+                                                (i.target.src = `${DefaultProfile}`)
+                                            }
+                                            src={`${
+                                                process.env.REACT_APP_API_URL
+                                            }/post/photo/${person._id}`}
+                                            alt={person.title}
+                                        />
+                                        <div>
+                                            <p className="lead">
+                                                {person.title}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div> */}
+
+                    <div className="col-md-4">
+                        <h3 className="text-primary">{likes.length} Pin dish</h3>
+                        <hr />
+                        {likes.map((post, i) => (
+                            <div key={i}>
+                                <div>
+                                    <Link to={`/post/${post._id}`}>
+                                        <div>
+                                            <p className="lead">{post.title}</p>
                                         </div>
                                     </Link>
                                 </div>

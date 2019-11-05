@@ -24,7 +24,8 @@ export const list = page => {
 };
 
 export const listpersonalize = page => {
-    return fetch(`${process.env.REACT_APP_API_URL}/post/?page=${page}`, {
+    const {personality} = JSON.parse(localStorage.getItem("jwt")).user;
+    return fetch(`${process.env.REACT_APP_API_URL}/post/?page=${page}&personality=${personality}`, {
         method: "GET"
     })
         .then(response => {
