@@ -12,9 +12,10 @@ class Profile extends Component {
     constructor() {
         super()
         this.state = {
-            user: { following: [], followers: [] },
+            user: { following: [], followers: [] , likes: []},
             redirectToSignin: false,
             posts: [],
+            likes: '',
             following: false,
             error: ''
         }
@@ -29,6 +30,15 @@ class Profile extends Component {
         return match;
     };
 
+    checkLikes = user => {
+        const jwt = isAuthenticated();
+        const match = user.likes.find(likes => {
+            // one id has many other ids(followers) and vice versa
+            return likes._id === jwt.user._id
+        });
+        return match;
+    };
+
     clickFollowButton = callApi => {
         const userId = isAuthenticated().user._id;
         const token = isAuthenticated().token;
@@ -37,7 +47,7 @@ class Profile extends Component {
                 if (data.error) {
                     this.setState({ error: data.error })
                 } else {
-                    this.setState({ user: data, following: !this.state.following })
+                    this.setState({ user: data, following: !this.state.following})
                 }
             })
     }
@@ -50,7 +60,8 @@ class Profile extends Component {
                     console.log({ redirectToSignin: true });
                 } else {
                     let following = this.checkFollow(data)
-                    this.setState({ user: data, following })
+                    let likes = this.checkLikes(data)
+                    this.setState({ user: data, following , likes})
                     this.loadPosts(data._id);
                 }
             });
@@ -134,6 +145,7 @@ class Profile extends Component {
                             posts={posts}
                             followers={user.followers}
                             following={user.following}
+                            likes={user.likes}
                         />
                     </div>
                 </div>

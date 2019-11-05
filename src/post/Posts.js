@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { list, listpersonalize } from "./apiPost";
 import DefaultPost from "../images/adspace.jpg";
 import { Link } from "react-router-dom";
+import { isAuthenticated } from '../auth';
 
 class Posts extends Component {
     constructor() {
@@ -10,19 +11,10 @@ class Posts extends Component {
             posts: [],
             post: [],
             page: 1,
-            search: ""
+            search: "",
+            user: ""
         };
     }
-
-    loadPost = page => {
-        listpersonalize(page).then(data => {
-            if (data.error) {
-                console.log(data.error);
-            } else {
-                this.setState({ post: data });
-            }
-        });
-    };
 
     loadPosts = page => {
         list(page).then(data => {
@@ -36,24 +28,31 @@ class Posts extends Component {
 
     componentDidMount() {
         this.loadPosts(this.state.page);
-        this.loadPost(this.state.page);
     }
 
     loadMore = number => {
         this.setState({ page: this.state.page + number });
         this.loadPosts(this.state.page + number);
-        this.loadPost(this.state.page + number);
     };
 
     loadLess = number => {
         this.setState({ page: this.state.page - number });
         this.loadPosts(this.state.page - number);
-        this.loadPost(this.state.page - number);
     };
 
     onchange = e => {
         this.setState({ search: e.target.value });
     }
+
+    loadPost = page => {
+        listpersonalize(page).then(data => {
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                this.setState({ post: data });
+            }
+        });
+    };
 
     renderPostPersonalize = post => {
         return (
@@ -65,7 +64,9 @@ class Posts extends Component {
                     const posterName = post.postedBy
                         ? post.postedBy.name
                         : " Unknown";
+                    const postpersonalize = post.postedBy._id;
                     return (
+
                         <div className="card col-md-4" key={i}>
                             <div className="card-body">
                                 <img
@@ -119,10 +120,13 @@ class Posts extends Component {
                     const { search } = this.state;
                     var code = post.title.toLowerCase()
 
-                    if (search !== "" && post.title.toLowerCase().indexOf(search.toLowerCase()) && post.type.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+
+                    if (search !== "" && post.title.toLowerCase().indexOf(search.toLowerCase()) && post.tag1.toLowerCase().indexOf(search.toLowerCase()) && post.tag2.toLowerCase().indexOf(search.toLowerCase()) === -1) {
                         return null
                     }
-
+                    if (search == "0") {
+                        return null
+                    }
                     return (
                         <div className="card col-md-4" key={i}>
                             <div className="card-body">
@@ -167,15 +171,25 @@ class Posts extends Component {
         const { posts, page, post } = this.state;
         return (
             <div className="container">
-                <h2 className="mt-5 mb-5">
-                    Personalization of user
-                </h2>
-                <div className="container">
 
+
+                {isAuthenticated() && (
+                    <>
+                        <h2 className="mt-5 mb-5">
+                            Personalization of user
+                        </h2>
+                        <div className="container">
+                            {this.loadPost(page)}
+                            {this.renderPostPersonalize(post)}
+                        </div>
+
+                    </>
+                )}
+
+                {/* <div className="container">
                     {this.renderPostPersonalize(post)}
+                </div> */}
 
-                </div>
-                
                 <br></br>
                 <h2 className="mt-5 mb-5">
                     {!posts.length ? "No more posts!" : "Recent Posts"}
