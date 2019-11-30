@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { singlePost, remove, like, unlike } from './apiPost'
+import { singlePost, remove, like, unlike, listsimilar } from './apiPost'
 import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
-import FollowProfileButton from '../user/FollowProfileButton';
-import Img from 'react-image'
+import Similartab from './Similartab';
 
 class SinglePost extends Component {
     constructor() {
@@ -12,15 +11,31 @@ class SinglePost extends Component {
         this.state = {
             user: { following: [], followers: [] },
             post: '',
-            user: '',
+            posts: [],
             redirectToHome: false,
             redirectToSignin: false,
             following: false,
             error: '',
             like: false,
-            likes: 0
+            likes: 0,
+            page: 1
         }
     }
+
+    loadPost = (page, posts) => {
+        listsimilar(page, posts).then(data => {
+            // if (data.error) {
+            //     console.log(data.error);
+            // } else {
+            //     this.setState({ posts: data });
+            // }
+
+            if (data) {
+                console.log(data, "ii")
+                this.setState({ posts: data });
+            }
+        });
+    };
 
     checkLike = likes => {
         const userId = isAuthenticated() && isAuthenticated().user._id;
@@ -57,7 +72,10 @@ class SinglePost extends Component {
             if (data.error) {
                 console.log(data.error);
             } else {
+                console.log(data)
                 this.setState({ post: data, likes: data.likes.length, like: this.checkLike(data.likes) });
+        this.loadPost(this.state.page, data.similar)
+
             }
         })
     }
@@ -178,11 +196,16 @@ class SinglePost extends Component {
                 <br />
                 <p className="card-text"> {post.bodys} </p>
                 <br />
+                {/* <p className="card-text"> {post.similar} </p> */}
+                <br />
                 <p className="font-italic mark">
                     Posted by <Link to={`/user/${posterId}`}>{posterName}{" "}</Link>
                     on {new Date(post.created).toDateString()}
                 </p>
                 <br />
+                {/* <Similartab
+                    similar={post.similar}
+                /> */}
                 <div className="d-inline-block">
                     <Link to={`/`} className="btn btn-raised btn-primary mr-5">
                         Bact to posts
@@ -201,7 +224,8 @@ class SinglePost extends Component {
                     }
                 </div>
                 <br />
-                <img   
+                <br />
+                <img
                     style={{ height: "200px", width: "auto" }}
                     className="img-thumbnail"
                     src={`${
@@ -241,9 +265,56 @@ class SinglePost extends Component {
 
     };
 
-    render() {
-        const { post, redirectToHome, redirectToSignin } = this.state;
+    renderPostSimilar = posts => {
+        return (
+            <div className="row">
+                {posts.map((post, i) => {
+                    const posterId = post.postedBy
+                        ? `/user/${post.postedBy._id}`
+                        : "";
+                    const posterName = post.postedBy
+                        ? post.postedBy.name
+                        : " Unknown";
+                    return (
 
+                        <div className="card col-md-4" key={i}>
+                            <div className="card-body">
+                                <img
+                                    src={`${
+                                        process.env.REACT_APP_API_URL
+                                        }/post/photo/${post._id}`}
+                                    alt={post.title}
+                                    onError={i =>
+                                        (i.target.src = `${DefalutPost}`)
+                                    }
+                                    className="img-thunbnail mb-3"
+                                    style={{ height: "100px", width: "100px" }}
+                                />
+                                <h5 className="card-title">{post.title}</h5>
+                                {/* <p className="card-text">
+                                    {post.body.substring(0, 100)}
+                                </p> */}
+                                <br />
+                                <Link
+                                    to={`/post/${post._id}`}
+                                    className="btn btn-raised btn-primary btn-sm"
+                                >
+                                    Read more
+                                </Link>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        );
+    };
+
+    render() {
+        const { post, redirectToHome, redirectToSignin, page, posts} = this.state;
+        let tempSimilar = []
+        if (post.similar) {
+            tempSimilar = post.similar
+        }
         if (redirectToHome) {
             return <Redirect to={`/`} />;
         } else if (redirectToSignin) {
@@ -257,6 +328,13 @@ class SinglePost extends Component {
                 {!post ? (
                     <div className="jumbotron text-center">
                         <h2>Loading ...</h2> </div>) : (this.renderPost(post))}
+                <h2 className="mt-5 mb-5">
+                    Similar dish
+                </h2>
+                <div className="container">
+                    {/* {this.loadPost(page, tempSimilar)} */}
+                    {this.renderPostSimilar(posts)}
+                </div>
 
             </div>
         );

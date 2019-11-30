@@ -10,7 +10,7 @@ class Posts extends Component {
         this.state = {
             posts: [],
             post: [],
-            page: 1,
+            page: '',
             search: "",
             user: ""
         };
@@ -64,7 +64,6 @@ class Posts extends Component {
                     const posterName = post.postedBy
                         ? post.postedBy.name
                         : " Unknown";
-                    const postpersonalize = post.postedBy._id;
                     return (
 
                         <div className="card col-md-4" key={i}>
@@ -118,13 +117,12 @@ class Posts extends Component {
                         : " Unknown";
 
                     const { search } = this.state;
-                    var code = post.title.toLowerCase()
 
 
-                    if (search !== "" && post.title.toLowerCase().indexOf(search.toLowerCase()) && post.tag1.toLowerCase().indexOf(search.toLowerCase()) && post.tag2.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+                    if (search !== "" && post.title.toLowerCase().indexOf(search.toLowerCase()) && post.body.toLowerCase().indexOf(search.toLowerCase()) && post.tag1.toLowerCase().indexOf(search.toLowerCase()) && post.tag2.toLowerCase().indexOf(search.toLowerCase()) === -1) {
                         return null
                     }
-                    if (search == "0") {
+                    if (search === "0") {
                         return null
                     }
                     return (

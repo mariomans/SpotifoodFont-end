@@ -143,8 +143,8 @@ class Profile extends Component {
                         <hr />
                         <ProfileTabs
                             posts={posts}
-                            followers={user.followers}
-                            following={user.following}
+                            // followers={user.followers}
+                            // following={user.following}
                             likes={user.likes}
                         />
                     </div>

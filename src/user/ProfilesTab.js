@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import DefaultProfile from "../images/avatar.jpg";
 
 class ProfileTabs extends Component {
     render() {
-        const { following, followers, posts, likes } = this.props;
+        const { posts, likes} = this.props;
         return (
             <div>
                 <div className="row">
@@ -44,7 +43,7 @@ class ProfileTabs extends Component {
                         ))}
                     </div> */}
 
-                    <div className="col-md-4">
+                    {/* <div className="col-md-4">
                         <h3 className="text-primary">
                             {following.length} Following
                         </h3>
@@ -79,7 +78,7 @@ class ProfileTabs extends Component {
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
 
                     {/* <div className="col-md-4">
                         <h3 className="text-primary">
@@ -148,6 +147,8 @@ class ProfileTabs extends Component {
                             </div>
                         ))}
                     </div>
+
+
                 </div>
             </div>
         );

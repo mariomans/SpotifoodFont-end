@@ -3,13 +3,9 @@ import { isAuthenticated } from '../auth';
 import { read, update, updateUser } from './apiUser';
 import { Redirect } from "react-router-dom";
 import DefalutProfrile from '../images/avatar.jpg';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import SaveIcon from '@material-ui/icons/Save';
-import { makeStyles } from '@material-ui/core/styles';
 
 class EditProfile extends Component {
-
+    
     constructor() {
         super()
         this.state = {
@@ -53,7 +49,7 @@ class EditProfile extends Component {
 
     isValid = () => {
         const { name, email, password, fileSize } = this.state
-        if (fileSize == 160000) {
+        if (fileSize === 160000) {
             this.setState({ error: "Only jpg/jpeg and png files are allowed!", loading: false });
             return false
         }
@@ -82,7 +78,7 @@ class EditProfile extends Component {
         const fileName = document.getElementById("fileName").value;
         const idxDot = fileName.lastIndexOf(".") + 1;
         var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+        if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
             //TO DO
 
         } else {
@@ -159,12 +155,9 @@ class EditProfile extends Component {
                 </select>
 
             </div>
-            <Button onClick={this.clickSubmit} variant="contained"
-                color="primary"
-                size="large"
-                startIcon={<SaveIcon />}>
+            <button onClick={this.clickSubmit} className="btn btn-raised btn-primary mr-5">
                 UPDATE
-            </Button>
+            </button>
         </form>
     );
 
@@ -175,7 +168,6 @@ class EditProfile extends Component {
         }
 
         const photoUrl = id ? `${process.env.REACT_APP_API_URL}/user/photo/${id}?${new Date().getTime()}` : DefalutProfrile;
-
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Edit Profile</h2>

@@ -27,7 +27,7 @@ class NewPost extends Component {
 
     isValid = () => {
         const { title, body,fileSize } = this.state
-        if (fileSize == 160000) {
+        if (fileSize === 160000) {
             this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false});
             return false
         }
@@ -46,7 +46,7 @@ class NewPost extends Component {
         const fileName = document.getElementById("fileName").value;
         const idxDot = fileName.lastIndexOf(".") + 1;
         var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
+        if (extFile==="jpg" || extFile==="jpeg" || extFile==="png"){
             //TO DO
         }else{
             this.setState({ error: "Only jpg/jpeg and png files are allowed!" ,loading: false,fileSize: 160000});
@@ -121,7 +121,6 @@ class NewPost extends Component {
         const {
             title,
             body,
-            photo,
             user,
             error,
             loading,
