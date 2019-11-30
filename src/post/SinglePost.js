@@ -3,7 +3,6 @@ import { singlePost, remove, like, unlike, listsimilar } from './apiPost'
 import DefalutPost from '../images/adspace.jpg';
 import { Link, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../auth';
-import Similartab from './Similartab';
 
 class SinglePost extends Component {
     constructor() {
@@ -154,7 +153,7 @@ class SinglePost extends Component {
         const posterId = post.postedBy ? post.postedBy._id : ""
         const posterName = post.postedBy ? post.postedBy.name : "Unknown"
 
-        const { like, likes } = this.state
+        const { like } = this.state
         return (
             <div className="card-body">
                 <img
@@ -269,12 +268,6 @@ class SinglePost extends Component {
         return (
             <div className="row">
                 {posts.map((post, i) => {
-                    const posterId = post.postedBy
-                        ? `/user/${post.postedBy._id}`
-                        : "";
-                    const posterName = post.postedBy
-                        ? post.postedBy.name
-                        : " Unknown";
                     return (
 
                         <div className="card col-md-4" key={i}>
@@ -310,11 +303,7 @@ class SinglePost extends Component {
     };
 
     render() {
-        const { post, redirectToHome, redirectToSignin, page, posts} = this.state;
-        let tempSimilar = []
-        if (post.similar) {
-            tempSimilar = post.similar
-        }
+        const { post, redirectToHome, redirectToSignin, posts} = this.state;
         if (redirectToHome) {
             return <Redirect to={`/`} />;
         } else if (redirectToSignin) {

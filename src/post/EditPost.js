@@ -3,7 +3,6 @@ import { singlePost, update } from './apiPost';
 import { isAuthenticated } from '../auth';
 import { Redirect } from "react-router-dom";
 import DefaultPost from '../images/dishes.jpg';
-import ImageUploader from 'react-images-upload';
 
 class EditPost extends Component {
     constructor() {
