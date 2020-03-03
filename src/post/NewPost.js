@@ -60,6 +60,7 @@ class NewPost extends Component {
         const fileSize = name === "photo" ? event.target.files[0].size : 0;
         this.postData.set(name, value);
         this.setState({ [name]: value, fileSize });
+        console.log("handleChange() : ", "name :", name, "fileSize :",fileSize)
     };
 
     clickSubmit = event => {
@@ -80,6 +81,7 @@ class NewPost extends Component {
                         bodys:"",
                         redirectToProfile: true
                     });
+                console.log("newPostForm() : ", "title :", data.title, "body :",data.body)
                 }
             });
         }

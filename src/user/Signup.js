@@ -31,7 +31,7 @@ class Signup extends Component {
             password,
             personalization
         };
-        // console.log(user);
+        console.log("Email :",user.email, "Password :" ,user.password, "Name :",user.name,"Date of birth : ",user.dob,"Gender :",user.gender);
 
         signup(user)
             .then(data => {

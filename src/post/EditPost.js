@@ -31,7 +31,9 @@ class EditPost extends Component {
                     body: data.body,
                     bodys: data.bodys,
                     error: '',
+
                 });
+                console.log("editPostForm() : ", "title :", data.title, "body :",data.body)
             }
         });
     };
@@ -73,11 +75,11 @@ class EditPost extends Component {
     clickSubmits = event => {
         event.preventDefault();
         this.setState({ loading: true });
-
         if (this.isValid()) {
 
             const postId = "5d5d59311c9d4400001100de"
             const token = isAuthenticated().token;
+
             update(postId, token, this.postData)
                 .then(data => {
                     if (data.error) this.setState({ error: data.error });
@@ -192,7 +194,7 @@ class EditPost extends Component {
 
 
 
-                {this.editPostForm(title, body , bodys)}
+                {this.editPostForm(title, body, bodys)}
 
                 {isAuthenticated().user &&
                     isAuthenticated().user.role === "admin" && (
